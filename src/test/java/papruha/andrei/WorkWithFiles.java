@@ -1,11 +1,10 @@
 package papruha.andrei;
 
-import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -25,5 +24,15 @@ public class WorkWithFiles {
             assertThat(textContent).contains("This repository is the home of the next generation of JUnit, _JUnit 5_");
             is.close();
         }
+    }
+
+    @Test
+    void selenideUploadFile() {
+        open("https://fineuploader.com/demos.html");
+        $("input[type='file']").uploadFromClasspath("cat.png");
+        $("div.qq-file-info").shouldHave(Condition.text("cat.png"));
+        $("span.qq-upload-file-selector").shouldHave(
+                Condition.attribute("title", "cat.png")
+        );
     }
 }
